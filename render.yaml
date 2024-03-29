@@ -1,5 +1,6 @@
 databases:
   - name: dittofeed-db
+    region: frankfurt
 
 envVarGroups:
   - name: clickhouse-credentials
@@ -30,8 +31,10 @@ envVarGroups:
       value: postgresql
 services:
   - type: web
+    plan: standard
     name: dittofeed-lite
     runtime: image
+    region: frankfurt
     autoDeploy: false
     image:
       url: "docker.io/dittofeed/dittofeed-lite:v0.12.1"
@@ -80,7 +83,8 @@ services:
         generateValue: true
   - type: pserv
     name: dittofeed-ch
-    env: docker
+    runtime: docker
+    region: frankfurt
     plan: standard
     autoDeploy: false
     dockerfilePath: ./render/clickhouse/Dockerfile
@@ -95,7 +99,7 @@ services:
   - type: pserv
     name: temporal
     autoDeploy: false
-    env: docker
+    runtime: docker
     dockerfilePath: ./render/temporal/server/auto-setup/Dockerfile
     envVars:
     - fromGroup: temporal-shared
